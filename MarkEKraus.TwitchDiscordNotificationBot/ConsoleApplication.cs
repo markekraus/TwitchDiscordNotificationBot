@@ -8,6 +8,9 @@ using TwitchLib.Api.Services.Events.LiveStreamMonitor;
 using TwitchLib.Api.Interfaces;
 using MarkEKraus.DiscordWebhookService;
 using System.Collections.Generic;
+using System;
+using TwitchLib.Api.Helix.Models.Games;
+using System.Text.RegularExpressions;
 
 namespace MarkEKraus.TwitchDiscordNotificationBot
 {
@@ -19,6 +22,7 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
         private IApiSettings _apiSettings;
         private LiveStreamMonitorService _twitchMonitor;
         private IWebhookService _webhookService;
+        private static Dictionary<string, Game> _gameList = new Dictionary<string, Game>(StringComparer.InvariantCultureIgnoreCase);
 
         public ConsoleApplication(
             ILogger<ConsoleApplication> logger,
@@ -55,8 +59,59 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
         private void Monitor_OnStreamOnline(object sender, OnStreamOnlineArgs args)
         {
             _logger.LogInformation($"channel: {args.Channel}");
-            var game = _twitchApi.Helix.Games.GetGamesAsync(new List<string>{args.Stream.GameId}).GetAwaiter().GetResult();
-            _webhookService.SendMessageAsync(new WebhookMessage{Content = $"{args.Stream.UserName} is streaming {game.Games.FirstOrDefault().Name} https://twitch.tv/{args.Channel}"});
+            var message = _config.Value.TwitchChannels
+                .Where(
+                    a => a.Channel.Equals(args.Channel, StringComparison.CurrentCultureIgnoreCase))
+                .FirstOrDefault()
+                .Message;
+            
+            _webhookService.SendMessageAsync(new WebhookMessage{Content = ParseMessage(message, args)});
+        }
+
+        private string ParseMessage(string Message, OnStreamOnlineArgs args)
+        {
+            var replacements = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
+            {
+                {"{userName}", args.Stream.UserName},
+                {"{channel}", args.Channel},
+                {"{url}", $"https://twitch.tv/{args.Channel}"},
+                {"{game}", GetGame(args.Stream.GameId).Name},
+                {"{gameBoxArtUrl}", GetGame(args.Stream.GameId).BoxArtUrl},
+                {"{streamLanguage}", args.Stream.Language},
+                {"{streamType}", args.Stream.Type},
+                {"{title}", args.Stream.Title},
+                {"{viewerCount}", args.Stream.ViewerCount.ToString()},
+                {"{startTime}", args.Stream.StartedAt.ToString()}
+            };
+
+            return Regex.Replace(
+                                Message,
+                                String.Join(
+                                    "|",
+                                    replacements
+                                        .Keys
+                                        .Select(k => k.ToString())
+                                        .ToArray()),
+                                m => replacements[m.Value],
+                                RegexOptions.IgnoreCase);
+        }
+
+        private Game GetGame(string GameId)
+        {
+            Game response;
+            if(_gameList.TryGetValue(GameId, out response))
+            {
+                return response;
+            }
+
+            response = _twitchApi.Helix.Games.GetGamesAsync(
+                    new List<string>{GameId})
+                        .GetAwaiter()
+                        .GetResult()
+                        .Games
+                        .FirstOrDefault();
+            _gameList.TryAdd(GameId, response);
+            return response;
         }
     }
 }
