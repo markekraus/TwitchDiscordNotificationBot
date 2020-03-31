@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TwitchDiscordNotificationBot
+namespace MarkEKraus.TwitchDiscordNotificationBot
 {
     internal class AppSettings
     {
@@ -9,7 +9,8 @@ namespace TwitchDiscordNotificationBot
         public string TwitchApiClientSecret { get; set; }
         public int TwitchApiCheckIntervalSeconds { get; set; } = 60;
         public IList<TwitchChannel> TwitchChannels { get; set; }
-        public Uri DiscordWebHook { get; set; }
-
+        public Uri DiscordWebHookUri { get; set; }
+        public bool EnableConsoleLogging { get; set; } = false;
+        public bool EnableFileLogging { get; set; } = true;
     }
 }

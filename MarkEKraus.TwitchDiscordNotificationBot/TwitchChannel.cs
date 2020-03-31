@@ -1,4 +1,4 @@
-namespace TwitchDiscordNotificationBot
+namespace MarkEKraus.TwitchDiscordNotificationBot
 {
     internal class TwitchChannel
     {
