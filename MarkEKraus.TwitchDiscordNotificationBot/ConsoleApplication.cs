@@ -65,8 +65,64 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
                     a => a.Channel.Equals(args.Channel, StringComparison.CurrentCultureIgnoreCase))
                 .FirstOrDefault()
                 .Message;
+
+            var user = _twitchApi.Helix.Users
+                .GetUsersAsync(logins: new List<string>(){ args.Channel })
+                .GetAwaiter()
+                .GetResult()
+                .Users
+                .FirstOrDefault();
             
-            _webhookService.SendMessageAsync(new WebhookMessage{Content = ParseMessage(message, args)});
+            var webhookMessage = new WebhookMessage();
+            webhookMessage.Content = ParseMessage(message, args);
+
+            webhookMessage.Embeds = new List<IMessageEmbed>()
+            {
+                new MessageEmbed()
+                {
+                    Author = new MessageEmbedAuthor()
+                    {
+                        Name = args.Stream.UserName,
+                        IconUrl = user.ProfileImageUrl,
+                        Url = $"https://twitch.tv/{args.Channel}"
+                    },
+                    // Hex 9B59B6 "Dark Purple"
+                    Color = 10181046,
+                    Title = args.Stream.Title,
+                    Url = $"https://twitch.tv/{args.Channel}",
+                    Type = MessageEmbedType.rich,
+                    Thumbnail = new MessageEmbedImage()
+                    {
+                        Url = user.ProfileImageUrl,
+                        Height = 300,
+                        Width = 300
+                    },
+                    Image = new MessageEmbedImage()
+                    {
+                        Url = args.Stream.ThumbnailUrl.Replace("{width}","320").Replace("{height}","180"),
+                        Height = 180,
+                        Width = 320
+                    },
+                    Fields = new List<IMessageEmbedField>()
+                    {
+                        new MessageEmbedField()
+                        {
+                            IsInline = true,
+                            Name = "Game",
+                            Value = GetGame(args.Stream.GameId).Name
+                        },
+                        new MessageEmbedField()
+                        {
+                            IsInline = true,
+                            Name = "Viewers",
+                            Value = args.Stream.ViewerCount.ToString()
+                        }
+                    },
+                    Timestamp = DateTime.UtcNow
+                }
+            };
+
+            _webhookService.SendMessageAsync(webhookMessage);
         }
 
         private string ParseMessage(string Message, OnStreamOnlineArgs args)
