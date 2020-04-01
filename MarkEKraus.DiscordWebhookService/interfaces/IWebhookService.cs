@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace MarkEKraus.DiscordWebhookService
+namespace MarkEKraus.DiscordWebhookService.Interfaces
 {
     public interface IWebhookService
     {

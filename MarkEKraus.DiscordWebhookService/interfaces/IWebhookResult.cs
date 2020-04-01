@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace MarkEKraus.DiscordWebhookService
+namespace MarkEKraus.DiscordWebhookService.Interfaces
 {
     public interface IWebhookResult
     {

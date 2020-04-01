@@ -6,11 +6,12 @@ using TwitchLib.Api.Services;
 using System.Linq;
 using TwitchLib.Api.Services.Events.LiveStreamMonitor;
 using TwitchLib.Api.Interfaces;
-using MarkEKraus.DiscordWebhookService;
 using System.Collections.Generic;
 using System;
 using TwitchLib.Api.Helix.Models.Games;
 using System.Text.RegularExpressions;
+using MarkEKraus.DiscordWebhookService.Models;
+using MarkEKraus.DiscordWebhookService.Interfaces;
 
 namespace MarkEKraus.TwitchDiscordNotificationBot
 {

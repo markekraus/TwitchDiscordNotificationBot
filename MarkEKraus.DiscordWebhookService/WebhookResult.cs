@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using MarkEKraus.DiscordWebhookService.Interfaces;
 
 namespace MarkEKraus.DiscordWebhookService
 {

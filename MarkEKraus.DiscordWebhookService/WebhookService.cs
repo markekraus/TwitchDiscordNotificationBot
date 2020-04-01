@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text;
 using System.Net.Mime;
+using MarkEKraus.DiscordWebhookService.Interfaces;
+using System.Text.Json.Serialization;
 
 namespace MarkEKraus.DiscordWebhookService
 {
@@ -15,11 +17,7 @@ namespace MarkEKraus.DiscordWebhookService
         private ILogger<WebhookService> _logger;
         private IOptions<WebhookOptions> _config;
 
-        private static JsonSerializerOptions jsonOptions = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                WriteIndented = true
-            };
+        private JsonSerializerOptions jsonOptions;
 
         public WebhookService(
             HttpClient httpClient,
@@ -29,10 +27,19 @@ namespace MarkEKraus.DiscordWebhookService
             _httpClient = httpClient;
             _logger = logger;
             _config = config;
+
+            jsonOptions = new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };
+            jsonOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
         }
         public async Task<IWebhookResult> SendMessageAsync(IWebhookMessage Message)
         {
             var httpMessageBody = JsonSerializer.Serialize(Message, jsonOptions);
+
+            _logger.LogInformation($"SendMessageAsync httpMessageBody: {httpMessageBody}");
 
             var httpMessage = new HttpRequestMessage()
             {

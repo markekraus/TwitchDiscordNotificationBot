@@ -8,6 +8,7 @@ using TwitchLib.Api.Core;
 using TwitchLib.Api.Core.Interfaces;
 using TwitchLib.Api.Interfaces;
 using MarkEKraus.DiscordWebhookService;
+using MarkEKraus.DiscordWebhookService.Interfaces;
 
 namespace MarkEKraus.TwitchDiscordNotificationBot
 {
