@@ -12,5 +12,6 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
         public Uri DiscordWebHookUri { get; set; }
         public bool EnableConsoleLogging { get; set; } = false;
         public bool EnableFileLogging { get; set; } = true;
+        public bool SkipActiveStreamsOnStartup { get; set; } = true;
     }
 }

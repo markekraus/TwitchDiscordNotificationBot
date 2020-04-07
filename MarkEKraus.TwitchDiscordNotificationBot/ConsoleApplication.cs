@@ -25,6 +25,8 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
         private LiveStreamMonitorService _twitchMonitor;
         private IWebhookService _webhookService;
         private static Dictionary<string, Game> _gameList = new Dictionary<string, Game>(StringComparer.InvariantCultureIgnoreCase);
+        private DateTime _startNotificationTime;
+        private const int _delayNotificationsSeconds = 20;
 
         public ConsoleApplication(
             ILogger<ConsoleApplication> logger,
@@ -55,13 +57,25 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
 
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(TwitchApiExceptionHandler);
 
+            // TwitchLib monintors treat already streaming streams as an OnStreamOnline.
+            // This workaround uses a delay to ignore OnStreamOnline for a few seconds
+            // after the monitor's first interval.
+            _startNotificationTime = DateTime.Now.AddSeconds(_twitchMonitor.IntervalInSeconds + _delayNotificationsSeconds);
+
             _twitchMonitor.Start();
+            
 
             await Task.Delay(-1);
         }
 
         private void Monitor_OnStreamOnline(object sender, OnStreamOnlineArgs args)
         {
+            if(_config.Value.SkipActiveStreamsOnStartup && DateTime.Now < _startNotificationTime)
+            {
+                _logger.LogInformation($"Skipping Active Stream {args.Channel}");
+                return;
+            }
+
             _logger.LogInformation($"channel: {args.Channel}");
             var message = _config.Value.TwitchChannels
                 .Where(
