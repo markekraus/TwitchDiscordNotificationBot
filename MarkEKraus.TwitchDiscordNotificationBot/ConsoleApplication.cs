@@ -12,6 +12,7 @@ using TwitchLib.Api.Helix.Models.Games;
 using System.Text.RegularExpressions;
 using MarkEKraus.DiscordWebhookService.Models;
 using MarkEKraus.DiscordWebhookService.Interfaces;
+using TwitchLib.Api.Core.Exceptions;
 
 namespace MarkEKraus.TwitchDiscordNotificationBot
 {
@@ -51,6 +52,8 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
                 .ToList());
             
             _twitchMonitor.OnStreamOnline += Monitor_OnStreamOnline;
+
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(TwitchApiExceptionHandler);
 
             _twitchMonitor.Start();
 
@@ -169,6 +172,22 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
                         .FirstOrDefault();
             _gameList.TryAdd(GameId, response);
             return response;
+        }
+
+        private void TwitchApiExceptionHandler (object sender, UnhandledExceptionEventArgs args)
+        {
+            if(args.ExceptionObject is InternalServerErrorException e)
+            {
+                _logger.LogError($"Caught {nameof(InternalServerErrorException)} exception: {e.Message}{Environment.NewLine}{e.StackTrace}");
+                _twitchMonitor.Stop();
+                _twitchMonitor.Start();
+            }
+            else
+            {
+                var ex = (Exception)args.ExceptionObject;
+                _logger.LogCritical($"Unhandled exception. {ex.Message}{Environment.NewLine}{ex.StackTrace}");
+                Environment.Exit(1);
+            }
         }
     }
 }
