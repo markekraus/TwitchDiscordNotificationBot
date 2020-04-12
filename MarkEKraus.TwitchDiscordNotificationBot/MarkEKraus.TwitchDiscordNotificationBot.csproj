@@ -5,6 +5,11 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>9ddd4335-056e-485e-b436-0baca28f0d45</UserSecretsId>
     <PublishSingleFile>true</PublishSingleFile>
+    <Company>Mark E. Kraus</Company>
+    <Copyright>© 2020 Mark E. Kraus Rights Reserved</Copyright>
+    <Product>TwitchDiscordNotificationBot</Product>
+    <Description>A bot that notifies Discord when a Twitch streamer goes live.</Description>
+    <Title>Twitch Discord Notification Bot</Title>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Discord.Net.Rest" Version="2.1.1" />

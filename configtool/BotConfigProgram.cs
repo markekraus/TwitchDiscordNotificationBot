@@ -12,6 +12,7 @@ namespace configtool
             AddPage(new MainPage(this));
             AddPage(new BotConfigPage(this));
             AddPage(new ServiceConfigPage(this));
+            AddPage(new ChannelConfigPage(this));
 
             SetPage<MainPage>();
         }

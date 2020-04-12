@@ -7,7 +7,6 @@ namespace configtool.pages
 {
     public class BotConfigPage : MenuPage
     {
-        private static string _appSettingsFile;
         public BotConfigPage(Program program)
             : base ("Bot Settings Configuration", program,
                 new Option("Set TwitchApiClientId", () => 
@@ -25,16 +24,78 @@ namespace configtool.pages
                     SetDiscordWebHookUri();
                     program.NavigateTo<BotConfigPage>();
                 }),
+                new Option("Set TwitchApiCheckIntervalSeconds", () => 
+                {
+                    SetTwitchApiCheckIntervalSeconds();
+                    program.NavigateTo<BotConfigPage>();
+                }),
+                new Option("Enable console logging", () => 
+                {
+                    UpdateFile("EnableConsoleLogging",true);
+                    ConsoleProgram.PressToContinue();
+                    program.NavigateTo<BotConfigPage>();
+                }),
+                new Option("Disable console logging", () => 
+                {
+                    UpdateFile("EnableConsoleLogging",false);
+                    ConsoleProgram.PressToContinue();
+                    program.NavigateTo<BotConfigPage>();
+                }),
+                new Option("Enable file logging", () => 
+                {
+                    UpdateFile("EnableFileLogging",true);
+                    ConsoleProgram.PressToContinue();
+                    program.NavigateTo<BotConfigPage>();
+                }),
+                new Option("Disable file logging", () => 
+                {
+                    UpdateFile("EnableFileLogging",false);
+                    ConsoleProgram.PressToContinue();
+                    program.NavigateTo<BotConfigPage>();
+                }),
+                new Option("Skip active streams on startup", () => 
+                {
+                    UpdateFile("SkipActiveStreamsOnStartup",true);
+                    ConsoleProgram.PressToContinue();
+                    program.NavigateTo<BotConfigPage>();
+                }),
+                new Option("Notify active streams on startup", () => 
+                {
+                    UpdateFile("SkipActiveStreamsOnStartup",false);
+                    ConsoleProgram.PressToContinue();
+                    program.NavigateTo<BotConfigPage>();
+                }),
+                new Option("Manage Channels", () => program.NavigateTo<ChannelConfigPage>()),
                 new Option("Exit Configtool", () => Environment.Exit(0)))
         {
-            _appSettingsFile = Path.Join(ConsoleProgram.GetBasePath(),"appSettings.json");
+        }
+
+        private static void SetTwitchApiCheckIntervalSeconds()
+        {
+            bool isNumber = false;
+            int interval;
+            do
+            {
+                Console.WriteLine("Enter Twitch API Check Interval Seconds: ");
+                var webhook = Console.ReadLine();
+                isNumber = int.TryParse(webhook,out interval);
+
+                if(!isNumber)
+                {
+                    Console.WriteLine("Response must be a number.");
+                }
+
+            } while (!isNumber);
+
+            UpdateFile("TwitchApiCheckIntervalSeconds",interval);
+            ConsoleProgram.PressToContinue();
         }
 
         private static void SetDiscordWebHookUri()
         {
-            Console.WriteLine("Enter Twitch App Client Secret: ");
+            Console.WriteLine("Enter Discord Webhook Uri: ");
             var webhook = Console.ReadLine();
-            UpdateFile("TwitchApiClientSecret",webhook);
+            UpdateFile("DiscordWebHookUri",webhook);
             ConsoleProgram.PressToContinue();
         }
 
@@ -54,18 +115,32 @@ namespace configtool.pages
             ConsoleProgram.PressToContinue();
         }
 
-        private static void UpdateFile(string setting, string value)
+        internal static void UpdateFile(string setting, object value)
         {
+            var appSettingsFile = Path.Join(ConsoleProgram.GetBasePath(),"appSettings.json");
             Console.WriteLine($"Updating {setting}...");
-            Console.WriteLine($"Getting current settings from {_appSettingsFile}");
-            var fileContents = File.ReadAllText(_appSettingsFile);
+            Console.WriteLine($"Getting current settings from {appSettingsFile}");
+            var fileContents = File.ReadAllText(appSettingsFile);
             dynamic jsonObj = JsonConvert.DeserializeObject(fileContents);
             Console.WriteLine($"Previous setting: {jsonObj[setting]}");
             Console.WriteLine($"New setting: {value}");
-            jsonObj[setting] = value;
+            if(value is string stringValue)
+            {
+                jsonObj[setting] = stringValue;
+            }
+            if(value is int intValue)
+            {
+                jsonObj[setting] = intValue;
+            }
+            if(value is bool boolValue)
+            {
+                jsonObj[setting] = boolValue;
+            }
             var outContents = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
-            File.WriteAllText(_appSettingsFile, outContents);
+            File.WriteAllText(appSettingsFile, outContents);
             Console.WriteLine($"Updated {setting}!");
         }
+
+
     }
 }

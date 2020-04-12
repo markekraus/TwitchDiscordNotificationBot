@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <Company>Mark E. Kraus</Company>
+    <Copyright>© 2020 Mark E. Kraus Rights Reserved</Copyright>
+    <Product>DiscordWebhookService</Product>
+    <Description>A service for writing to Discord Webhooks</Description>
+    <Title>Discord Webhook Service</Title>
   </PropertyGroup>
 
   <ItemGroup>

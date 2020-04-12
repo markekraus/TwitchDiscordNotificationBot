@@ -1,7 +1,25 @@
 # Twitch Discord Notification Bot
 
-This is a simple bot console application which will updated discord webhooks with messages when streams go online.
-This is a work in progress and is not yet functional.
+This is a simple Windows Service bot which will updated discord webhooks with messages when streams go online. This bot is downloaded and run on your local computer or on a Virtual Machine. It is compatible with Windows 7 and newer.
+
+The bot can be run as either a windows console app or as a Windows Service. When run as a windows service, it will automatically start and run in the background when your computer boots.
+
+## Quickstart
+
+1. Download the `TwitchDiscordNotificationBot.zip` [latest release](https://github.com/markekraus/TwitchDiscordNotificationBot/releases)
+1. Extract it to `c:\TwitchDiscordNotificationBot`
+1. [Register a Twitch App](#register-an-application-with-twitch) and get the client ID and client secret.
+1. [Create a Discord Webhook](https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks) and note the URI
+1. Run the `configtool.exe`
+1. choose `2` to configure bot settings
+1. choose `1`, enter the Twitch Client ID, and press any key
+1. choose `2`, enter the twitch client secret, and press any key
+1. choose `3`, enter the Discord Webhook URI, and press any key
+1. choose `13` to go back to the main menu
+1. choose `3` to manage channels then return to the main menu
+1. choose `1` from the main menu to configure the service
+1. choose `2` to register the service
+1. choose `4` to start the service
 
 ## Building
 
@@ -16,7 +34,27 @@ Invoke-Build ./build.ps1 -Task Publish
 
 ## Configuration
 
-You can configure the bot by updating the `appsettings.json`.
+You can configure the bot by using the `configtool.exe` binary or by manually updating the `appsettings.json` file.
+
+### Using configtool.exe
+
+**NOTE:** Always run the `configtool.exe` as an administrator with elevation.
+
+With the config tool you can manage the service or modify the bot configuration.
+
+```text
+Main Menu
+---
+1. Register/Unregister/Start/Stop/Disable Bot Service
+2. Configure Bot Settings
+3. Manage Twitch Channels
+4. Exit Configtool
+Choose an option:
+```
+
+### JSON Configuration
+
+Example `appsettings.json`:
 
 ```json
 {

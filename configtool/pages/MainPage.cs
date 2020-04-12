@@ -9,6 +9,7 @@ namespace configtool.pages
             : base("Main Menu", program,
             new Option("Register/Unregister/Start/Stop/Disable Bot Service", () => program.NavigateTo<ServiceConfigPage>()),
             new Option("Configure Bot Settings", () => program.NavigateTo<BotConfigPage>()),
+            new Option("Manage Twitch Channels", () => program.NavigateTo<ChannelConfigPage>()),
             new Option("Exit Configtool", () => Environment.Exit(0))
             )
         {

@@ -5,6 +5,11 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PublishSingleFile>true</PublishSingleFile>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <Company>Mark E. Kraus</Company>
+    <Copyright>© 2020 Mark E. Kraus Rights Reserved</Copyright>
+    <Product>TwitchDiscordNotificationBot ConfigTool</Product>
+    <Description>A CLI tool to configure and manage TwitchDiscordNotificationBot</Description>
+    <Title>TwitchDiscordNotificationBot ConfigTool</Title>
   </PropertyGroup>
 
   <ItemGroup>
