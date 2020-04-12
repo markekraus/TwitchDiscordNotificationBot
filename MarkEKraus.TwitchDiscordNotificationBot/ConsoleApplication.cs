@@ -13,10 +13,12 @@ using System.Text.RegularExpressions;
 using MarkEKraus.DiscordWebhookService.Models;
 using MarkEKraus.DiscordWebhookService.Interfaces;
 using TwitchLib.Api.Core.Exceptions;
+using Microsoft.Extensions.Hosting;
+using System.Threading;
 
 namespace MarkEKraus.TwitchDiscordNotificationBot
 {
-    internal class ConsoleApplication
+    internal class ConsoleApplication : BackgroundService
     {
         private ILogger<ConsoleApplication> _logger;
         private IOptions<AppSettings> _config;
@@ -27,6 +29,7 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
         private static Dictionary<string, Game> _gameList = new Dictionary<string, Game>(StringComparer.InvariantCultureIgnoreCase);
         private DateTime _startNotificationTime;
         private const int _delayNotificationsSeconds = 20;
+        private CancellationToken _token;
 
         public ConsoleApplication(
             ILogger<ConsoleApplication> logger,
@@ -42,6 +45,13 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
             _apiSettings = apiSettings;
             _webhookService = webhookService;
             _twitchMonitor = new LiveStreamMonitorService(_twitchApi, config.Value.TwitchApiCheckIntervalSeconds);
+            _token = new CancellationToken();
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken cancelToken)
+        {
+            _token = cancelToken;
+            await Run();
         }
 
         public async Task Run()
@@ -63,9 +73,9 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
             _startNotificationTime = DateTime.Now.AddSeconds(_twitchMonitor.IntervalInSeconds + _delayNotificationsSeconds);
 
             _twitchMonitor.Start();
-            
 
-            await Task.Delay(-1);
+
+            await Task.Delay(-1,_token);
         }
 
         private void Monitor_OnStreamOnline(object sender, OnStreamOnlineArgs args)

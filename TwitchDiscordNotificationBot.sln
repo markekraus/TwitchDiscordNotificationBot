@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkEKraus.DiscordWebhookService", "MarkEKraus.DiscordWebhookService\MarkEKraus.DiscordWebhookService.csproj", "{13671FE7-E17A-49B1-9844-9288D43B777E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkEKraus.TwitchDiscordNotificationBot", "MarkEKraus.TwitchDiscordNotificationBot\MarkEKraus.TwitchDiscordNotificationBot.csproj", "{168CE695-17D8-4EFC-8727-2357FC2DBBB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "configtool", "configtool\configtool.csproj", "{F1D48234-E058-4AEC-AE37-1A155CC71D60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,18 +20,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{13671FE7-E17A-49B1-9844-9288D43B777E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{13671FE7-E17A-49B1-9844-9288D43B777E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{13671FE7-E17A-49B1-9844-9288D43B777E}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{13671FE7-E17A-49B1-9844-9288D43B777E}.Debug|x64.Build.0 = Debug|Any CPU
-		{13671FE7-E17A-49B1-9844-9288D43B777E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{13671FE7-E17A-49B1-9844-9288D43B777E}.Debug|x86.Build.0 = Debug|Any CPU
-		{13671FE7-E17A-49B1-9844-9288D43B777E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{13671FE7-E17A-49B1-9844-9288D43B777E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{13671FE7-E17A-49B1-9844-9288D43B777E}.Release|x64.ActiveCfg = Release|Any CPU
-		{13671FE7-E17A-49B1-9844-9288D43B777E}.Release|x64.Build.0 = Release|Any CPU
-		{13671FE7-E17A-49B1-9844-9288D43B777E}.Release|x86.ActiveCfg = Release|Any CPU
-		{13671FE7-E17A-49B1-9844-9288D43B777E}.Release|x86.Build.0 = Release|Any CPU
 		{168CE695-17D8-4EFC-8727-2357FC2DBBB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{168CE695-17D8-4EFC-8727-2357FC2DBBB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{168CE695-17D8-4EFC-8727-2357FC2DBBB0}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -44,5 +32,17 @@ Global
 		{168CE695-17D8-4EFC-8727-2357FC2DBBB0}.Release|x64.Build.0 = Release|Any CPU
 		{168CE695-17D8-4EFC-8727-2357FC2DBBB0}.Release|x86.ActiveCfg = Release|Any CPU
 		{168CE695-17D8-4EFC-8727-2357FC2DBBB0}.Release|x86.Build.0 = Release|Any CPU
+		{F1D48234-E058-4AEC-AE37-1A155CC71D60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1D48234-E058-4AEC-AE37-1A155CC71D60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1D48234-E058-4AEC-AE37-1A155CC71D60}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F1D48234-E058-4AEC-AE37-1A155CC71D60}.Debug|x64.Build.0 = Debug|Any CPU
+		{F1D48234-E058-4AEC-AE37-1A155CC71D60}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F1D48234-E058-4AEC-AE37-1A155CC71D60}.Debug|x86.Build.0 = Debug|Any CPU
+		{F1D48234-E058-4AEC-AE37-1A155CC71D60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1D48234-E058-4AEC-AE37-1A155CC71D60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1D48234-E058-4AEC-AE37-1A155CC71D60}.Release|x64.ActiveCfg = Release|Any CPU
+		{F1D48234-E058-4AEC-AE37-1A155CC71D60}.Release|x64.Build.0 = Release|Any CPU
+		{F1D48234-E058-4AEC-AE37-1A155CC71D60}.Release|x86.ActiveCfg = Release|Any CPU
+		{F1D48234-E058-4AEC-AE37-1A155CC71D60}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

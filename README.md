@@ -3,6 +3,17 @@
 This is a simple bot console application which will updated discord webhooks with messages when streams go online.
 This is a work in progress and is not yet functional.
 
+## Building
+
+The best way to build and publish this project is with PowerShell and `Invoke-Build`.
+
+```PowerShell
+Invoke-Build ./build.ps1 -Task Clean
+Invoke-Build ./build.ps1 -Task Restore
+Invoke-Build ./build.ps1 -Task Build
+Invoke-Build ./build.ps1 -Task Publish
+```
+
 ## Configuration
 
 You can configure the bot by updating the `appsettings.json`.
