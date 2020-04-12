@@ -6,7 +6,7 @@ The bot can be run as either a windows console app or as a Windows Service. When
 
 ## Quickstart
 
-1. Download the `TwitchDiscordNotificationBot.zip` [latest release](https://github.com/markekraus/TwitchDiscordNotificationBot/releases)
+1. Download the `TwitchDiscordNotificationBot.zip` [latest release](https://github.com/markekraus/TwitchDiscordNotificationBot/releases/latest)
 1. Extract it to `c:\TwitchDiscordNotificationBot`
 1. [Register a Twitch App](#register-an-application-with-twitch) and get the client ID and client secret.
 1. [Create a Discord Webhook](https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks) and note the URI
