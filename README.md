@@ -192,5 +192,5 @@ Note that `\` in messages needs to be escaped like `\\`.
 In my discord, the message would appear as:
 
 ```text
-Hey @members markekraus (@markekraus) is streaming at https://twitch.tv/markekraus
+Hey @members markekraus (@markekraus) is streaming "Undertale" at https://twitch.tv/markekraus
 ```
