@@ -108,6 +108,8 @@ namespace configtool.pages
             ExecSc(args);
             args = $"description {_serviceName} \"{_serviceDescription}\"";
             ExecSc(args);
+            args = $"failure {_serviceName} actions= restart/60000ms/restart/60000/restart/60000ms// reset= 3600000";
+            ExecSc(args);
             System.Console.WriteLine("Service Registered!");
             ConsoleProgram.PressToContinue();
         }
