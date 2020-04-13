@@ -89,7 +89,7 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
             _logger.LogInformation($"channel: {args.Channel}");
             var message = _config.Value.TwitchChannels
                 .Where(
-                    a => a.Channel.Equals(args.Channel, StringComparison.CurrentCultureIgnoreCase))
+                    a => a.Channel.Equals(args.Channel, StringComparison.InvariantCultureIgnoreCase))
                 .FirstOrDefault()
                 .Message;
 
@@ -101,7 +101,18 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
                 .FirstOrDefault();
             
             var webhookMessage = new WebhookMessage();
-            webhookMessage.Content = ParseMessage(message, args);
+
+            try
+            {
+                webhookMessage.Content = ParseMessage(message, args);
+                _logger.LogInformation($"Message: {webhookMessage.Content}");
+            }
+            catch (System.Exception e)
+            {
+                _logger.LogCritical(e,$"Unable to parse message: {e.Message}");
+                return;
+            }
+
 
             webhookMessage.Embeds = new List<IMessageEmbed>()
             {
