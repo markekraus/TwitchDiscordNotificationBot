@@ -113,6 +113,29 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
                 return;
             }
 
+            string tags = string.Empty;
+            List<string> tagsList = new List<string>();
+            try
+            {
+                var tagsResult = _twitchApi.Helix.Streams
+                    .GetStreamTagsAsync(args.Stream.UserId)
+                    .GetAwaiter()
+                    .GetResult()
+                    .Data;
+                foreach (var tag in tagsResult)
+                {
+                    string localizedTag;
+                    if(tag.LocalizationNames.TryGetValue("en-us",out localizedTag))
+                    {
+                        tagsList.Add(localizedTag);
+                    }
+                }
+                tags = string.Join(", ",tagsList);
+            }
+            catch (System.Exception e)
+            {
+                _logger.LogCritical(e, $"Unable to retrieve tags: {e.Message}");
+            }
 
             webhookMessage.Embeds = new List<IMessageEmbed>()
             {
@@ -154,6 +177,12 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
                             IsInline = true,
                             Name = "Viewers",
                             Value = args.Stream.ViewerCount.ToString()
+                        },
+                        new MessageEmbedField()
+                        {
+                            IsInline = true,
+                            Name = "Tags",
+                            Value = tags
                         }
                     },
                     Timestamp = DateTime.UtcNow
