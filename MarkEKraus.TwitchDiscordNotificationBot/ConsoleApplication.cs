@@ -15,6 +15,7 @@ using MarkEKraus.DiscordWebhookService.Interfaces;
 using TwitchLib.Api.Core.Exceptions;
 using Microsoft.Extensions.Hosting;
 using System.Threading;
+using System.Net.Sockets;
 
 namespace MarkEKraus.TwitchDiscordNotificationBot
 {
@@ -246,10 +247,16 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
                 _twitchMonitor.Stop();
                 _twitchMonitor.Start();
             }
+            else if (args.ExceptionObject is SocketException e2)
+            {
+                _logger.LogError($"Caught {nameof(SocketException)} exception: {e2.Message}{Environment.NewLine}{e2.StackTrace}");
+                _twitchMonitor.Stop();
+                _twitchMonitor.Start();
+            }
             else
             {
                 var ex = (Exception)args.ExceptionObject;
-                _logger.LogCritical($"Unhandled exception. {ex.Message}{Environment.NewLine}{ex.StackTrace}");
+                _logger.LogCritical($"Unhandled exception {args.ExceptionObject.GetType().FullName}. {ex.Message}{Environment.NewLine}{ex.StackTrace}");
                 Environment.Exit(1);
             }
         }

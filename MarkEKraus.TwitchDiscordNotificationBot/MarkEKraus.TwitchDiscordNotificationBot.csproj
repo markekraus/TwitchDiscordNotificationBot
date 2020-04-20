@@ -4,9 +4,9 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>9ddd4335-056e-485e-b436-0baca28f0d45</UserSecretsId>
-    <Version>1.0.2.0</Version>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
+    <Version>1.0.3.0</Version>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <FileVersion>1.0.3.0</FileVersion>
     <PublishSingleFile>true</PublishSingleFile>
     <Company>Mark E. Kraus</Company>
     <Copyright>© 2020 Mark E. Kraus Rights Reserved</Copyright>
