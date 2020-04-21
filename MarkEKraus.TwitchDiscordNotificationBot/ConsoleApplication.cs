@@ -16,6 +16,7 @@ using TwitchLib.Api.Core.Exceptions;
 using Microsoft.Extensions.Hosting;
 using System.Threading;
 using System.Net.Sockets;
+using System.Net.Http;
 
 namespace MarkEKraus.TwitchDiscordNotificationBot
 {
@@ -250,6 +251,12 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
             else if (args.ExceptionObject is SocketException e2)
             {
                 _logger.LogError($"Caught {nameof(SocketException)} exception: {e2.Message}{Environment.NewLine}{e2.StackTrace}");
+                _twitchMonitor.Stop();
+                _twitchMonitor.Start();
+            }
+            else if (args.ExceptionObject is HttpRequestException e3)
+            {
+                _logger.LogError($"Caught {nameof(HttpRequestException)} exception: {e3.Message}{Environment.NewLine}{e3.StackTrace}");
                 _twitchMonitor.Stop();
                 _twitchMonitor.Start();
             }
