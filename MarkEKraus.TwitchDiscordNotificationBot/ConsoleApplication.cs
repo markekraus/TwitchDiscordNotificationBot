@@ -162,7 +162,7 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
                     },
                     Image = new MessageEmbedImage()
                     {
-                        Url = args.Stream.ThumbnailUrl.Replace("{width}","320").Replace("{height}","180"),
+                        Url = args.Stream.ThumbnailUrl.Replace("{width}","320").Replace("{height}","180") + "?" + DateTime.UtcNow.ToFileTimeUtc().ToString(),
                         Height = 180,
                         Width = 320
                     },
