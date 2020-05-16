@@ -10,6 +10,9 @@
     <Product>TwitchDiscordNotificationBot ConfigTool</Product>
     <Description>A CLI tool to configure and manage TwitchDiscordNotificationBot</Description>
     <Title>TwitchDiscordNotificationBot ConfigTool</Title>
+    <Version>1.0.2.0</Version>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
