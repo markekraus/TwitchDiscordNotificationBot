@@ -48,29 +48,38 @@ namespace MarkEKraus.DiscordWebhookService
                 Method = HttpMethod.Post
             };
 
-            var httpResponse = await _httpClient.SendAsync(httpMessage, HttpCompletionOption.ResponseHeadersRead);
-
-            if(!httpResponse.IsSuccessStatusCode)
+            try
             {
-                _logger.LogError($"SendMessageAsync Request Failed");
-            }
+                var httpResponse = await _httpClient.SendAsync(httpMessage, HttpCompletionOption.ResponseContentRead);
 
-            _logger.LogInformation($"SendMessageAsync Success: {httpResponse.IsSuccessStatusCode}");
-            _logger.LogInformation($"SendMessageAsync StatusCode: {httpResponse.StatusCode}");
-            _logger.LogInformation($"SendMessageAsync ReasonPhrase: {httpResponse.ReasonPhrase}");
+                if(!httpResponse.IsSuccessStatusCode)
+                {
+                    _logger.LogError($"SendMessageAsync Request Failed");
+                }
+
+                _logger.LogInformation($"SendMessageAsync Success: {httpResponse.IsSuccessStatusCode}");
+                _logger.LogInformation($"SendMessageAsync StatusCode: {httpResponse.StatusCode}");
+                _logger.LogInformation($"SendMessageAsync ReasonPhrase: {httpResponse.ReasonPhrase}");
             
-            var responseBody = await httpResponse.Content.ReadAsStringAsync();
-            _logger.LogInformation($"SendMessageAsync Response:");
-            _logger.LogInformation(responseBody);
+                var responseBody = await httpResponse.Content.ReadAsStringAsync();
+                _logger.LogInformation($"SendMessageAsync Response:");
+                _logger.LogInformation(responseBody);
 
-            return new WebhookResult
+                return new WebhookResult
+                {
+                    HttpResponseMessage = httpResponse,
+                    ResponseBody = responseBody,
+                    WebhookMessage = Message,
+                    WebhookOptions = _config.Value,
+                    IsSuccess = httpResponse.IsSuccessStatusCode
+                };
+            }
+            catch (System.Exception e)
             {
-                HttpResponseMessage = httpResponse,
-                ResponseBody = responseBody,
-                WebhookMessage = Message,
-                WebhookOptions = _config.Value,
-                IsSuccess = httpResponse.IsSuccessStatusCode
-            };
+                _logger.LogError(e,"SendMessageAsync Request Failed with exception");
+                throw e;
+            }
+            
         }
     }
 }

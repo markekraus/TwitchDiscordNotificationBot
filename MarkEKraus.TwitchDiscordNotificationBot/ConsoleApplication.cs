@@ -191,7 +191,7 @@ namespace MarkEKraus.TwitchDiscordNotificationBot
                 }
             };
 
-            _webhookService.SendMessageAsync(webhookMessage);
+            _webhookService.SendMessageAsync(webhookMessage).GetAwaiter().GetResult();
         }
 
         private string ParseMessage(string Message, OnStreamOnlineArgs args)
